@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 public class SmartSpritesTask extends Task
 {
     private String rootDir;
+    private String svgSpriteRelLocation;
     private String outputDir;
     private String documentRootDir;
     private MessageLevel logLevel;
@@ -34,10 +35,15 @@ public class SmartSpritesTask extends Task
     private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;
 
     private List<String> cssFiles = Lists.newArrayList();
+    private List<String> ignoredDirs = Lists.newArrayList();
 
     public void setRootDir(File dir)
     {
         this.rootDir = dir.getPath();
+    }
+
+    public void setSvgSpriteRelLocation(String svgSpriteRelLocation) {
+        this.svgSpriteRelLocation = svgSpriteRelLocation;
     }
 
     public void setOutputDir(File outputDir)
@@ -102,7 +108,7 @@ public class SmartSpritesTask extends Task
     public void execute()
     {
         final SmartSpritesParameters parameters = new SmartSpritesParameters(rootDir,
-            cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix,
+            cssFiles, ignoredDirs, svgSpriteRelLocation, outputDir, documentRootDir, logLevel, cssFileSuffix,
             spritePngDepth, spritePngIe6, cssFileEncoding, markSpriteImages);
 
         final FailureDetectorMessageSink failureDetectorMessageSink = new FailureDetectorMessageSink();

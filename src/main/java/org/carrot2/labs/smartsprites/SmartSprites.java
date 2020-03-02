@@ -18,9 +18,8 @@ public class SmartSprites
      */
     public static void main(String [] args) throws IOException
     {
-        final SmartSpritesParameters parameters = new SmartSpritesParameters();
-
-        final ParserProperties parserProperties = ParserProperties.defaults();
+         final SmartSpritesParameters parameters = new SmartSpritesParameters();
+         final ParserProperties parserProperties = ParserProperties.defaults();
         parserProperties.withUsageWidth(80);
 
         final CmdLineParser parser = new CmdLineParser(parameters, parserProperties);

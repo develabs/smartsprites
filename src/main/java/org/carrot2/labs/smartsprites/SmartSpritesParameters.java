@@ -1,5 +1,6 @@
 package org.carrot2.labs.smartsprites;
 
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +38,30 @@ public final class SmartSpritesParameters
     @Argument(metaVar = "CSS-FILES")
     @Option(name = "--css-files", required = false, metaVar = "FILES")
     private List<String> cssFiles;
+
+    /**
+     * Relative paths to directories that should be ignored
+     * This relative path is resolved by appending each --ignore-dirs value to --root-dir-path and the resulting value represents
+     * directory that should be ignored.
+     *
+     * Eg: If we want to ignore root-dir-path/build/css dir we will provide --ignore-dirs build/css
+     * If we want to ignore multiple directories we should provide comma separated values, eg: --ignore-dirs build/css,build/lib/css
+     *
+     * {@link #ignoredDirs} optional param, if present paths are resolved by appending ignoreDirs to root-dir-path, usage example in comments above
+     * {@link #rootDir} must be present if --ignore-dirs is set.
+     */
+    @Option(name = "--ignore-dirs", required = false, metaVar = "DIR")
+    private List<String> ignoredDirs;
+
+    /**
+     * Relative location that will go from target css file to the location where svg sprite should be created
+     * Eg: If we have root-dir/main.css and --svg-sprite-rel-location ../images/sprite created svg sprite will end up in
+     * root-dir/images/sprite directory
+     *
+     * {@link #svgSpriteRelLocation} required param
+     */
+    @Option(name = "--svg-sprite-rel-location", required = false, metaVar = "DIR")
+    private String svgSpriteRelLocation;
 
     /**
      * Output directory for processed CSS files and CSS-relative sprite images. The
@@ -126,6 +151,10 @@ public final class SmartSpritesParameters
     /** By default, we don't generate sprite directive in output css */
     public static final boolean DEFAULT_MARK_SPRITE_IMAGES = false;
 
+    public static final String DEFAULT_SVG_REL_LOCATION = "../../../img/white";
+
+    public static final List<String> DEFAULT_VALS_FOR_IGNORED_DIRS = Lists.newArrayList("lib");
+
     public enum PngDepth
     {
         AUTO, INDEXED, DIRECT;
@@ -145,7 +174,7 @@ public final class SmartSpritesParameters
      */
     public SmartSpritesParameters(String rootDir)
     {
-        this(rootDir, null, null, null, MessageLevel.INFO, DEFAULT_CSS_FILE_SUFFIX,
+        this(rootDir, null, DEFAULT_VALS_FOR_IGNORED_DIRS, DEFAULT_SVG_REL_LOCATION, null, null, MessageLevel.INFO, DEFAULT_CSS_FILE_SUFFIX,
             DEFAULT_SPRITE_PNG_DEPTH, DEFAULT_SPRITE_PNG_IE6, DEFAULT_CSS_FILE_ENCODING,
             DEFAULT_MARK_SPRITE_IMAGES);
     }
@@ -154,11 +183,12 @@ public final class SmartSpritesParameters
      * Creates the parameters.
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
+        List<String> ignoredDirs, String svgSpriteRelLocation,
         String outputDir, String documentRootDir, MessageLevel logLevel,
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
         String cssEncoding)
     {
-        this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix,
+        this(rootDir, cssFiles, ignoredDirs, svgSpriteRelLocation, outputDir, documentRootDir, logLevel, cssFileSuffix,
             spritePngDepth, spritePngIe6, cssEncoding, DEFAULT_MARK_SPRITE_IMAGES);
     }
 
@@ -166,12 +196,15 @@ public final class SmartSpritesParameters
      * Creates the parameters.
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
+        List<String> ignoredDirs, String svgSpriteRelLocation,
         String outputDir, String documentRootDir, MessageLevel logLevel,
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
         String cssEncoding, boolean markSpriteImages)
     {
         this.rootDir = rootDir;
         this.cssFiles = cssFiles;
+        this.ignoredDirs = ignoredDirs;
+        this.svgSpriteRelLocation = svgSpriteRelLocation;
         this.outputDir = outputDir;
         this.documentRootDir = documentRootDir;
         this.logLevel = logLevel;
@@ -255,6 +288,17 @@ public final class SmartSpritesParameters
             }
         }
 
+        if (hasIgnoredDirs() && !hasRootDir()) {
+            log.error(MessageType.ROOT_DIR_IS_REQUIRED_IF_IGNORED_DIRS_IS_SPECIFIED);
+            valid = false;
+        }
+
+        if (!hasSvgSpriteRelLocation()) {
+            log.error(MessageType.SVG_REL_LOCATION_IS_REQUIRED);
+            valid = false;
+        }
+
+
         return valid;
     }
 
@@ -304,6 +348,27 @@ public final class SmartSpritesParameters
     {
         return cssFiles != null && !cssFiles.isEmpty();
     }
+
+    public List<String> getIgnoredDirs() {
+        if (!hasIgnoredDirs()) {
+            ignoredDirs = DEFAULT_VALS_FOR_IGNORED_DIRS;
+        }
+        return ignoredDirs;
+    }
+
+    public boolean hasIgnoredDirs()
+    {
+        return ignoredDirs != null && !ignoredDirs.isEmpty();
+    }
+
+    public String getSvgSpriteRelLocation() {
+        if (!hasSvgSpriteRelLocation()) {
+            svgSpriteRelLocation = DEFAULT_SVG_REL_LOCATION;
+        }
+        return svgSpriteRelLocation;
+    }
+
+    public boolean hasSvgSpriteRelLocation() { return StringUtils.isNotBlank(svgSpriteRelLocation); }
 
     public String getOutputDir()
     {

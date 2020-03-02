@@ -1,5 +1,6 @@
 package org.carrot2.labs.smartsprites;
 
+import com.google.common.io.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -143,7 +144,46 @@ public class SpriteBuilder
             }
         }
 
+        // Remove all ignored files
+        if (parameters.hasIgnoredDirs())
+        {
+            String rootPathCleaned = parameters.getRootDir().replace("\\","/");
+
+
+            for (String ignoredDir: parameters.getIgnoredDirs())
+            {
+                String ignoredDirCleaned = ignoredDir.replace("\\","/");
+                String pathConnector = (rootPathCleaned.endsWith("/") || ignoredDirCleaned.startsWith("/")) ? "" : "/";
+
+
+                String fullPathOfIgnoredDir = rootPathCleaned.concat(pathConnector).concat(ignoredDirCleaned);
+
+                Iterator<String> iter = filePaths.iterator();
+
+                while (iter.hasNext())
+                {
+                    String filePathCleaned = iter.next().replace("\\","/");
+                    if (filePathCleaned.startsWith(fullPathOfIgnoredDir))
+                    {
+                        iter.remove();
+                    }
+
+                }
+            }
+        }
+
         buildSprites(filePaths);
+
+
+        SvgSpriteBuilder ssb = new SvgSpriteBuilder(parameters, messageLog, resourceHandler);
+
+        try {
+        	ssb.buildSprites(filePaths);
+		} catch (Exception e) {
+            e.printStackTrace();
+			messageLog.error(MessageType.GENERIC,
+				e.toString() + ":" + e.getMessage());
+		}
     }
 
     private void filterFilesOutsideRootDir(Collection<String> filePaths)
@@ -402,6 +442,21 @@ public class SpriteBuilder
                     + imagePath, "/");
     }
 
+    private String getRelativeToReplacementLocation(String imagePath,
+        String originalCssFile,
+        String declaringCssPath)
+    {
+        declaringCssPath = declaringCssPath.replace(File.separatorChar, '/');
+        final String declarationReplacementRelativePath = PathUtils.getRelativeFilePath(
+            originalCssFile.substring(0, originalCssFile.lastIndexOf('/')),
+            declaringCssPath.substring(0, declaringCssPath.lastIndexOf('/'))).replace(
+            File.separatorChar, '/');
+        return FileUtils.canonicalize(
+            (Strings.isNullOrEmpty(declarationReplacementRelativePath)
+                || originalCssFile.equals(declaringCssPath) ? ""
+                : declarationReplacementRelativePath + '/')
+                + imagePath, "/");
+    }
     /**
      * Gets the name of the processed CSS file.
      */

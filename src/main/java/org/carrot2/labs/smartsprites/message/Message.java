@@ -76,6 +76,8 @@ public class Message implements Serializable
      */
     public enum MessageType
     {
+        MULTIPLE_SVG_IMAGE_RULES_FOUND("Only one svg-sprite-image rule can be present in css file"),
+
         CANNOT_DETERMINE_IMAGE_FORMAT("Cannot determine image format from file name: %s"),
 
         CANNOT_NOT_LOAD_IMAGE("Cannot load image: %s due to: %s"),
@@ -136,8 +138,19 @@ public class Message implements Serializable
         IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR(
             "Ignoring a CSS file outside of root directory: %s"),
 
+        BUILD_SVG_SPRITES_EXCEPTION(
+            "Exception during build of svg sprite images:  %s"),
+
         CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR(
             "A non-empty CSS file suffix is required when no output directory is specified"),
+
+        SVG_REL_LOCATION_IS_REQUIRED(
+            "param --svg-sprite-rel-location must be declared"
+        ),
+
+        ROOT_DIR_IS_REQUIRED_IF_IGNORED_DIRS_IS_SPECIFIED(
+            "param --root-dir-path is required if --ignore-dirs is used"
+        ),
 
         ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED(
             "Only 'left' or 'right' alignment allowed on vertical sprites, found: %s. Using 'left'."),
