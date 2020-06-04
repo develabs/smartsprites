@@ -63,3 +63,6 @@ Primjer izvrsavanja:
 Komanda za dobijanje produkcijskog jar-a
 
        mvn package -Prelease
+
+For OSSRH staging upload:
+mvn clean package -Prelease,sonatype
