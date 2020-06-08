@@ -27,7 +27,6 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
       -->
     <smartsprites rootdir="${root.dir.path}"
                   documentrootdir="${document.root.dir.path}"
-                  svgspriterellocation="${svg.sprite.rel.location}"
                   outputdir="${output.dir.path}"
                   cssfileencoding="${css.file.encoding}"
                   cssfilesuffix="${css.file.suffix}"

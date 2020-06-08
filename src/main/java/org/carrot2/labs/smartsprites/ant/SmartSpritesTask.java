@@ -23,11 +23,13 @@ import com.google.common.collect.Lists;
 public class SmartSpritesTask extends Task
 {
     private String rootDir;
-    private String svgSpriteRelLocation;
     private String outputDir;
     private String documentRootDir;
     private MessageLevel logLevel;
     private MessageLevel failOnLevel = MessageLevel.ERROR;
+
+    private String spriteDirPath = SmartSpritesParameters.DEFAULT_SPRITE_DIR_PATH;
+    private String spriteFileSuffix = SmartSpritesParameters.DEFAULT_SPRITE_FILE_SUFFIX;
     private String cssFileSuffix = SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX;
     private String cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;
     private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;
@@ -40,10 +42,6 @@ public class SmartSpritesTask extends Task
     public void setRootDir(File dir)
     {
         this.rootDir = dir.getPath();
-    }
-
-    public void setSvgSpriteRelLocation(String svgSpriteRelLocation) {
-        this.svgSpriteRelLocation = svgSpriteRelLocation;
     }
 
     public void setOutputDir(File outputDir)
@@ -108,7 +106,7 @@ public class SmartSpritesTask extends Task
     public void execute()
     {
         final SmartSpritesParameters parameters = new SmartSpritesParameters(rootDir,
-            cssFiles, ignoredDirs, svgSpriteRelLocation, outputDir, documentRootDir, logLevel, cssFileSuffix,
+            cssFiles, spriteFileSuffix, ignoredDirs, spriteDirPath, outputDir, documentRootDir, logLevel, cssFileSuffix,
             spritePngDepth, spritePngIe6, cssFileEncoding, markSpriteImages);
 
         final FailureDetectorMessageSink failureDetectorMessageSink = new FailureDetectorMessageSink();

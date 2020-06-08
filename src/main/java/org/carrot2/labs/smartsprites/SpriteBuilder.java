@@ -1,6 +1,5 @@
 package org.carrot2.labs.smartsprites;
 
-import com.google.common.io.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -145,12 +144,12 @@ public class SpriteBuilder
         }
 
         // Remove all ignored files
-        if (parameters.hasIgnoredDirs())
+        if (parameters.hasIgnoredDirPaths())
         {
             String rootPathCleaned = parameters.getRootDir().replace("\\","/");
 
 
-            for (String ignoredDir: parameters.getIgnoredDirs())
+            for (String ignoredDir: parameters.getIgnoredDirPaths())
             {
                 String ignoredDirCleaned = ignoredDir.replace("\\","/");
                 String pathConnector = (rootPathCleaned.endsWith("/") || ignoredDirCleaned.startsWith("/")) ? "" : "/";

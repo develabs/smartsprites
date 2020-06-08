@@ -911,7 +911,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
 
     private void buildSprites(File dir, boolean ie6) throws IOException
     {
-        buildSprites(new SmartSpritesParameters(dir.getPath(), null, null, "sprites", null, null,
+        buildSprites(new SmartSpritesParameters(dir.getPath(), null, null, null, "sprites", null, null,
             SmartSpritesParameters.DEFAULT_LOGGING_LEVEL,
             SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH, ie6,
@@ -926,7 +926,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     private void buildSprites(List<String> cssFiles, String rootDir, String outputDir)
         throws IOException
     {
-        buildSprites(new SmartSpritesParameters(rootDir, cssFiles, null, "sprites", outputDir, null,
+        buildSprites(new SmartSpritesParameters(rootDir, cssFiles, null, null, "sprites", outputDir, null,
             SmartSpritesParameters.DEFAULT_LOGGING_LEVEL,
             SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
@@ -945,7 +945,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
         String cssEncoding)
     {
-        return new SmartSpritesParameters(rootDir.getPath(), null, null, "sprites",
+        return new SmartSpritesParameters(rootDir.getPath(), null, null, null, "sprites",
             outputDir != null ? outputDir.getPath() : null,
             documentRootDir != null ? documentRootDir.getPath() : null, logLevel,
             cssFileSuffix, spritePngDepth, spritePngIe6, cssEncoding);

@@ -278,9 +278,11 @@ public class SvgSpriteBuilder {
 
 	private void populateSvgSpritesMultimap(String cssFileName, Multimap<String, SvgReplacementInfo> svgSpritesMultimap) throws Exception{
 
+		String spriteEnding = parameters.getSpriteFileSuffix().concat(".svg");
 		String normalizedCssFileName = cssFileName.replace("\\","/");
+
 		String[] paths = normalizedCssFileName.split("/");
-		String defSpriteName = paths[paths.length-1].split("\\.css")[0].concat("-sprite.svg");
+		String defSpriteName = paths[paths.length-1].split("\\.css")[0].concat(spriteEnding);
 
 		String thisCssFirstParentPath = "";
 
@@ -314,7 +316,7 @@ public class SvgSpriteBuilder {
 
 		String finalLocationForSvgSprite = (hasDefSvgSpriteImageDefinition) ?
 			getConnectedPath(parameters.getDocumentRootDir(), defSvgSpriteImageLoc) :
-			getConnectedPath(getConnectedPath(thisCssFirstParentPath, parameters.getSvgSpriteRelLocation()), defSpriteName); // use startup param svg sprite location or location from css comment rule
+			getConnectedPath(getConnectedPath(thisCssFirstParentPath, parameters.getSpriteDirPath()), defSpriteName); // use startup param svg sprite location or location from css comment rule
 
 		finalLocationForSvgSprite = FileUtils.canonicalize(finalLocationForSvgSprite, "/");
 
