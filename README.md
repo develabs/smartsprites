@@ -12,7 +12,7 @@ SVG spriting podrška
     
    `--ignore-dir-paths lib,lib2` - ignorisaće se svi css fajlovi sa `--root-dir-path/lib` i `--root-dir-path/lib2` putanja (ovo je korisno kada imamo css fajlove nekih biblioteka (tipa d3, highcharts...) koje ne želimo procesirati prilikom kreiranja novih sprite-ova)
     
-   `--sprite-file-suffix -sprite-id-1` - sprite-ovi će dobijati proslijedjeni sufiks (Primjer: svg-ovi iz a.css bi završili u a-sprite-id-1.svg u slučaju da koristimo konfig iz ovog primjera (ili ako ovo iskažemo u opštem slučaju ime sprite-a  = `{$cssFileName}{$fileSuffix}.svg`) (trenutno `--sprite-file-suffix` radi samo sa svg sprite-ovima)
+   `--sprite-file-suffix -sprite-id-1` - sprite-ovi će dobijati proslijedjeni sufiks (Primjer: svg-ovi iz a.css bi završili u a-sprite-id-1.svg u slučaju da koristimo konfig iz ovog primjera (ili ako ovo iskažemo u opštem slučaju ime sprite-a  = `${cssFileName}${fileSuffix}.svg`) (trenutno `--sprite-file-suffix` radi samo sa svg sprite-ovima)
   
 
 **2)** **Nove css comment naredbe**
